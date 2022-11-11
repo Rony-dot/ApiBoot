@@ -27,7 +27,6 @@ public class ApiBootApplication {
     @Bean
     CommandLineRunner runner (StudentRepository studentRepository, MongoTemplate mongoTemplate){
         return args -> {
-
             Address kochuAddress = new Address("BD","1213","Dhaka");
 
             Student  kochuStudent = new Student("Mr kochu",
@@ -38,37 +37,38 @@ public class ApiBootApplication {
                     LocalDateTime.now(),
                     List.of("Database","Networking","OOP"),
                     BigDecimal.valueOf(1477.33) );
-            Address kochuAddress2 = new Address("BD","1213","Dhaka");
 
-            Student  kochuStudent2 = new Student("Mr kochu2",
-                    "Mochu2",
-                    "kochu@gmail2.com",
-                    Gender.MALE,
-                    kochuAddress,
-                    LocalDateTime.now(),
-                    List.of("Database","Networking","OOP"),
-                    BigDecimal.valueOf(1477.33) );
-
-            Query query = new Query();
-            query.addCriteria(Criteria.where("email").is(kochuStudent.getEmail()));
-            List<Student> students = mongoTemplate.find(query, Student.class);
-            if(students.size() > 1){
-                System.out.println("Student existis: "+kochuStudent);
-                System.out.println("Total student found with this email: "+students.size());
-                throw  new ResourceAlreadyExistsException("Student Already exists with this email: "+kochuStudent.getEmail());
-            }
-
-            if(students.isEmpty()){
-                System.out.println("Student inserted: "+kochuStudent);
-                studentRepository.insert(kochuStudent);
-
-            }
-            else{
-                System.out.println("cannot insert student - Email existis");
-            }
-            studentRepository.insert(kochuStudent2);
-
+//            MongoTemplateWithQuery(studentRepository, mongoTemplate, kochuStudent);
+//            String testEmail = "kochu@gmail.com";
+            studentRepository.findStudentByEmail(kochuStudent.getEmail())
+                    .ifPresentOrElse(s -> {
+                        System.out.println("cannot insert student - Email existis");
+                    }, () -> {
+                        System.out.println("Student inserted: "+kochuStudent);
+                        studentRepository.insert(kochuStudent);
+                    });
         };
+    }
+
+    private static void MongoTemplateWithQuery(StudentRepository studentRepository, MongoTemplate mongoTemplate, Student kochuStudent) {
+
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("email").is(kochuStudent.getEmail()));
+        List<Student> students = mongoTemplate.find(query, Student.class);
+        if(students.size() > 1){
+            System.out.println("Student existis: "+kochuStudent);
+            System.out.println("Total student found with this email: "+students.size());
+            throw  new ResourceAlreadyExistsException("Student Already exists with this email: "+kochuStudent.getEmail());
+        }
+
+        if(students.isEmpty()){
+            System.out.println("Student inserted: "+kochuStudent);
+            studentRepository.insert(kochuStudent);
+        }
+        else{
+            System.out.println("cannot insert student - Email existis");
+        }
     }
 
 }
