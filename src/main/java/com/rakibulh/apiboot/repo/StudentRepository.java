@@ -10,4 +10,7 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends MongoRepository<Student,String> {
     Optional<Student> findStudentByEmail(String email);
+
+//    @Override
+//    public Boolean insert(Student student);
 }

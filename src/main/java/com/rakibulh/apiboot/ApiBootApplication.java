@@ -34,7 +34,6 @@ public class ApiBootApplication {
                     "kochu@gmail.com",
                     Gender.MALE,
                     kochuAddress,
-                    LocalDateTime.now(),
                     List.of("Database","Networking","OOP"),
                     BigDecimal.valueOf(1477.33) );
 

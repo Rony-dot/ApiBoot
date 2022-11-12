@@ -1,5 +1,6 @@
 package com.rakibulh.apiboot.service;
 
+import com.rakibulh.apiboot.exception.InternalServerException;
 import com.rakibulh.apiboot.exception.ResourceAlreadyExistsException;
 import com.rakibulh.apiboot.exception.ResourceNotFoundException;
 import com.rakibulh.apiboot.model.Student;
@@ -26,6 +27,14 @@ public class StudentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with this email"+email));
     }
 
+    public boolean addStudent(Student student){
+        try {
+            Student savedStudent = this.studentRepository.save(student);
+            return true;
+        }catch (Exception e){
+            throw new InternalServerException("Cannot insert student: "+student);
+        }
+    }
 
 
 }
