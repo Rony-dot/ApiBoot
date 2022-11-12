@@ -20,4 +20,9 @@ public class StudentControllerImpl implements StudentController {
         var students = studentService.getAllStudents();
         return ResponseEntity.ok(students);
     }
+
+    @Override
+    public ResponseEntity<Student> getStudentByEmail(String email) {
+        return ResponseEntity.ok(this.studentService.getStudentByEmail(email));
+    }
 }

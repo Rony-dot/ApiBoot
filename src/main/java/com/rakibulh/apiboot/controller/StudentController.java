@@ -3,6 +3,7 @@ package com.rakibulh.apiboot.controller;
 import com.rakibulh.apiboot.model.Student;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,4 +15,9 @@ public interface StudentController {
 
     @GetMapping("")
     ResponseEntity<List<Student>> getAllStudents();
+
+    @GetMapping("/{email}")
+    ResponseEntity<Student> getStudentByEmail(@PathVariable String email);
+
+
 }
