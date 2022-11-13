@@ -5,14 +5,15 @@ services:
     container_name: api-boot-server
     ports:
       - 8080:8080
+# ei environment pore add korchi
     environment:
       - SPRING_DATA_MONGODB_.HOST=apimongo
     depends_on:
-      - apimongo
+      - mongodb
     command: mvn clean spring-boot:run
-  apimongo:
-    image: mongo:latest
-    container_name: apimongo
+  mongodb:
+    image: mongo
+    container_name: mongodb
     ports:
       - 27017:27017
     volumes:
@@ -20,7 +21,16 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=rootuser
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
-      - DB_NAME=apiboot
+#  mongo-express:
+#    image: mongo-express
+#    container_name: mongo-express
+#    ports:
+#      - 8081:8081
+#    restart: always
+#    environment:
+#      - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
+#      - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
+#      - ME_CONFIG_MONGODB_SERVER=mongodb
 volumes:
   data : {}
 networks:
